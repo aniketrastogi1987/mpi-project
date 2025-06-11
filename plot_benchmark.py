@@ -20,13 +20,13 @@ plt.title('Execution Time vs Matrix Size')
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('execution_time_vs_matrix_size.png')
+plt.savefig('execution.png')
 plt.close()
 
 # Plot 2: Speedup vs Matrix Size (for each process count and serial)
 plt.figure(figsize=(10, 6))
 # Serial speedup is always 1.0
-plt.plot(serial['N'], [1.0]*len(serial), marker='o', linestyle='--', color='black', label='Serial (speedup=1.0)')
+#plt.plot(serial['N'], [1.0]*len(serial), marker='o', linestyle='--', color='black', label='Serial (speedup=1.0)')
 for p in sorted(df[df['type'] == 'mpi']['processes'].unique()):
     mpi = df[(df['type'] == 'mpi') & (df['processes'] == p)]
     plt.plot(mpi['N'], mpi['speedup'], marker='o', label=f'MPI ({p} procs)')
@@ -37,7 +37,26 @@ plt.title('Speedup vs Matrix Size')
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('speedup_vs_matrix_size.png')
+plt.savefig('speedup.png')
 plt.close()
+
+# Plot 3: Efficiency vs Matrix Size (for each process count and serial)
+plt.figure(figsize=(10, 6))
+# Serial speedup is always 1.0
+#plt.plot(serial['N'], [1.0]*len(serial), marker='o', linestyle='--', color='black', label='Serial (speedup=1.0)')
+for p in sorted(df[df['type'] == 'mpi']['processes'].unique()):
+    mpi = df[(df['type'] == 'mpi') & (df['processes'] == p)]
+    plt.plot(mpi['N'], mpi['efficiency'], marker='o', label=f'MPI ({p} procs)')
+
+plt.xlabel('Matrix Size (N x N)')
+plt.ylabel('Efficiency (SpeedUp / No. of Processes)')
+plt.title('Efficiency vs Matrix Size')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig('efficiency.png')
+plt.close()
+
+
 
 print('Plots saved as execution_time_vs_matrix_size.png and speedup_vs_matrix_size.png') 

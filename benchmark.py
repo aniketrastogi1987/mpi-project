@@ -65,7 +65,8 @@ def main():
                 "N": N,
                 "processes": 1,
                 "time": time_taken,
-                "speedup": 1.0
+                "speedup": 1.0,
+                "efficiency": 1.0
             })
 
     # MPI benchmarks
@@ -74,17 +75,19 @@ def main():
             time_taken = run_mpi(N, p)
             if time_taken is not None:
                 speedup = serial_times[N] / time_taken if time_taken > 0 else None
+                efficiency = speedup / p if speedup is not None else None
                 results.append({
                     "type": "mpi",
                     "N": N,
                     "processes": p,
                     "time": time_taken,
-                    "speedup": speedup
+                    "speedup": speedup,
+                    "efficiency": efficiency
                 })
 
     # Save to CSV
     with open("benchmark.csv", "w", newline="") as csvfile:
-        fieldnames = ["type", "N", "processes", "time", "speedup"]
+        fieldnames = ["type", "N", "processes", "time", "speedup", "efficiency"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for row in results:
